@@ -50,49 +50,96 @@
 
 <body class="index-page">
 
-  <header id="header" class="header d-flex align-items-center fixed-top">
-    <div class="container position-relative d-flex align-items-center justify-content-between">
+ <header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.webp" alt=""> -->
-        <h1 class="sitename">Horizon Key</h1><span>.</span>
-      </a>
+    <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      <h1 class="sitename">Horizon Key</h1><span>.</span>
+    </a>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html" class="active">About</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="team.html">Team</a></li>
-          <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-              <li><a href="#">Dropdown 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Dropdown 2</a></li>
-              <li><a href="#">Dropdown 3</a></li>
-              <li><a href="#">Dropdown 4</a></li>
-            </ul>
-          </li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <ul>
+            <li><a href="#">Dropdown 1</a></li>
+            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="#">Deep Dropdown 1</a></li>
+                <li><a href="#">Deep Dropdown 2</a></li>
+                <li><a href="#">Deep Dropdown 3</a></li>
+                <li><a href="#">Deep Dropdown 4</a></li>
+                <li><a href="#">Deep Dropdown 5</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Dropdown 2</a></li>
+            <li><a href="#">Dropdown 3</a></li>
+            <li><a href="#">Dropdown 4</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
 
-     <a class="btn-getstarted" href="signup.html">Get Started</a>
-       <a class="btn-getstarted" href="login.html">Login</a>
+    <!-- Auth Buttons -->
+    <div id="auth-buttons" class="d-flex align-items-center"></div>
 
-    </div>
-  </header>
+  </div>
+</header>
+
+<!-- Auth Script -->
+<script type="module">
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+  import { app } from "./firebase-config.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const auth = getAuth(app);
+    const authButtonsContainer = document.getElementById("auth-buttons");
+
+    function createAuthButtons(user) {
+      authButtonsContainer.innerHTML = "";
+
+      if (user) {
+        const emailSpan = document.createElement("span");
+        emailSpan.textContent = user.email;
+        emailSpan.className = "user-email me-3 fw-semibold";
+
+        const logoutBtn = document.createElement("button");
+        logoutBtn.textContent = "Logout";
+        logoutBtn.className = "btn btn-outline-danger btn-sm rounded-pill px-3";
+        logoutBtn.onclick = () => signOut(auth);
+
+        authButtonsContainer.appendChild(emailSpan);
+        authButtonsContainer.appendChild(logoutBtn);
+      } else {
+        const getStartedLink = document.createElement("a");
+        getStartedLink.href = "signup.html";
+        getStartedLink.className = "btn btn-primary rounded-pill px-4 fw-semibold";
+        getStartedLink.textContent = "Sign Up";
+
+        const loginLink = document.createElement("a");
+        loginLink.href = "login.html";
+        loginLink.className = "btn btn-outline-light rounded-pill px-4 fw-semibold ms-2";
+        loginLink.textContent = "Login";
+
+        authButtonsContainer.appendChild(getStartedLink);
+        authButtonsContainer.appendChild(loginLink);
+      }
+    }
+
+    onAuthStateChanged(auth, user => {
+      createAuthButtons(user);
+    });
+  });
+</script>
+
+
+
 
   <!-- About Section -->
   <section id="about" class="about section">

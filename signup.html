@@ -2,56 +2,17 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sign Up - Horizon Key</title>
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/css/main.css" rel="stylesheet">
 
-
-  <!-- Favicons -->
- <link href="/favicon.ico" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-
-
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: Invent
-  * Template URL: https://bootstrapmade.com/invent-bootstrap-business-template/
-  * Updated: May 12 2025 with Bootstrap v5.3.6
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-</head>
-
-  <script>
-  window.addEventListener("scroll", function () {
-    const nav = document.getElementById("navmenu");
-    if (window.scrollY > 50) {
-      nav.classList.add("nav-dark");
-    } else {
-      nav.classList.remove("nav-dark");
-    }
-  });
-</script>
-
+  <!-- Your existing CSS links -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="assets/css/main.css" rel="stylesheet" />
 
   <style>
     body {
@@ -122,17 +83,12 @@
       text-decoration: underline;
     }
   </style>
-
-  
-
 </head>
 
-<header id="header" class="header d-flex align-items-center fixed-top">
+<body>
+  <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.webp" alt=""> -->
         <h1 class="sitename">Horizon Key</h1><span>.</span>
       </a>
 
@@ -165,37 +121,138 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-       <a class="btn-getstarted" href="signup.html">Get Started</a>
-       <a class="btn-getstarted" href="login.html">Login</a>
-
+      <div id="auth-buttons" class="d-flex align-items-center gap-2">
+        <!-- JS will inject login/signup or user info + logout -->
+      </div>
     </div>
   </header>
 
+  <main>
+    <div class="form-wrapper">
+      <h2>Create Your Account</h2>
+      <form id="signup-form">
+        <div class="mb-3">
+          <label for="signupName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="signupName" required />
+        </div>
+        <div class="mb-3">
+          <label for="signupEmail" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="signupEmail" required />
+        </div>
+        <div class="mb-3">
+          <label for="signupPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="signupPassword" required />
+        </div>
+        <div class="mb-3">
+          <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="signupConfirmPassword" required />
+        </div>
+        <button type="submit" class="btn btn-custom w-100">Sign Up</button>
+        <p class="mt-4 text-center">
+          Already have an account? <a href="login.html">Log In</a>
+        </p>
+        <p id="signup-error" class="text-danger text-center mt-3"></p>
+      </form>
+    </div>
+  </main>
 
-<body>
-  <div class="form-wrapper">
-    <h2>Create Your Account</h2>
-    <form>
-      <div class="mb-3">
-        <label for="signupName" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="signupName" required />
-      </div>
-      <div class="mb-3">
-        <label for="signupEmail" class="form-label">Email Address</label>
-        <input type="email" class="form-control" id="signupEmail" required />
-      </div>
-      <div class="mb-3">
-        <label for="signupPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="signupPassword" required />
-      </div>
-      <div class="mb-3">
-        <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="signupConfirmPassword" required />
-      </div>
-      <button type="submit" class="btn btn-custom w-100">Sign Up</button>
-      <p class="mt-4 text-center">Already have an account? <a href="login.html">Log In</a></p>
-    </form>
-  </div>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Your Firebase config (replace with your own)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwrxpMDHbRSuOpdapdXdvabIUj7ysIhOI",
+      authDomain: "horizon-key-9f054.firebaseapp.com",
+      projectId: "horizon-key-9f054",
+      storageBucket: "horizon-key-9f054.firebasestorage.app",
+      messagingSenderId: "675446115778",
+      appId: "1:675446115778:web:23cdb1134f59af98ad9a5b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Update Navbar Buttons based on auth state
+    function updateAuthButtons(user) {
+      const authButtons = document.getElementById("auth-buttons");
+      authButtons.innerHTML = "";
+
+      if (user) {
+        // User logged in
+        const userEmail = document.createElement("span");
+        userEmail.textContent = user.email;
+        userEmail.style.color = "#ffcc33";
+        userEmail.style.marginRight = "10px";
+
+        const logoutBtn = document.createElement("button");
+        logoutBtn.textContent = "Logout";
+        logoutBtn.className = "btn btn-custom";
+        logoutBtn.onclick = () => auth.signOut();
+
+        authButtons.appendChild(userEmail);
+        authButtons.appendChild(logoutBtn);
+      } else {
+        // User logged out: show Get Started & Login links
+        const getStartedLink = document.createElement("a");
+        getStartedLink.href = "signup.html";
+        getStartedLink.className = "btn btn-custom";
+        getStartedLink.textContent = "Get Started";
+
+        const loginLink = document.createElement("a");
+        loginLink.href = "login.html";
+        loginLink.className = "btn btn-custom";
+        loginLink.style.marginLeft = "10px";
+        loginLink.textContent = "Login";
+
+        authButtons.appendChild(getStartedLink);
+        authButtons.appendChild(loginLink);
+      }
+    }
+
+    // Listen for auth state changes
+    auth.onAuthStateChanged(user => {
+      updateAuthButtons(user);
+      if (user) {
+        // Optionally redirect to homepage or dashboard after signup
+        // window.location.href = "index.html";
+      }
+    });
+
+    // Handle Signup form submit
+    const signupForm = document.getElementById("signup-form");
+    signupForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value;
+      const confirmPassword = document.getElementById("signupConfirmPassword").value;
+      const errorMsg = document.getElementById("signup-error");
+      errorMsg.textContent = "";
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = "Passwords do not match.";
+        return;
+      }
+
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          // Optionally update user profile with full name
+          return userCredential.user.updateProfile({ displayName: name });
+        })
+        .then(() => {
+          // Redirect to homepage or dashboard after signup
+          window.location.href = "index.html";
+        })
+        .catch(error => {
+          errorMsg.textContent = error.message;
+        });
+    });
+  </script>
 </body>
 
 </html>

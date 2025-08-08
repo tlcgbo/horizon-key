@@ -3009,3 +3009,26 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+
+
+/* Email display style */
+.user-email {
+  color: #f2c94c;
+  font-size: 0.9rem;
+}
+
+/* Button hover effects */
+.btn-primary:hover {
+  background-color: #d2c20e;
+}
+
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+}

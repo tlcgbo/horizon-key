@@ -2,39 +2,17 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Horizon Key</title>
 
-  <!-- Favicons -->
-  <link href="/favicon.ico" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
-
-  <script>
-    window.addEventListener("scroll", function () {
-      const nav = document.getElementById("navmenu");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-dark");
-      } else {
-        nav.classList.remove("nav-dark");
-      }
-    });
-  </script>
+  <!-- Your existing CSS links -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="assets/css/main.css" rel="stylesheet" />
 
   <style>
     body {
@@ -110,7 +88,6 @@
 <body class="index-page">
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
-
       <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <h1 class="sitename">Horizon Key</h1><span>.</span>
       </a>
@@ -144,15 +121,16 @@
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-       <a class="btn-getstarted" href="signup.html">Get Started</a>
-       <a class="btn-getstarted" href="login.html">Login</a>
+      <div id="auth-buttons" class="d-flex align-items-center gap-2">
+        <!-- JS will inject login/signup or user info + logout -->
+      </div>
     </div>
   </header>
 
   <main>
     <div class="form-wrapper">
       <h2>Welcome Back</h2>
-      <form>
+      <form id="login-form">
         <div class="mb-3">
           <label for="loginEmail" class="form-label">Email Address</label>
           <input type="email" class="form-control" id="loginEmail" required />
@@ -162,10 +140,100 @@
           <input type="password" class="form-control" id="loginPassword" required />
         </div>
         <button type="submit" class="btn btn-custom w-100">Log In</button>
-        <p class="mt-4 text-center">Don't have an account? <a href="signup.html">Sign Up</a></p>
+        <p class="mt-4 text-center">
+          Don't have an account? <a href="signup.html">Sign Up</a>
+        </p>
       </form>
+      <p id="login-error" class="text-danger text-center mt-3"></p>
     </div>
   </main>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // Your Firebase config (replace with your own)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwrxpMDHbRSuOpdapdXdvabIUj7ysIhOI",
+      authDomain: "horizon-key-9f054.firebaseapp.com",
+      projectId: "horizon-key-9f054",
+      storageBucket: "horizon-key-9f054.firebasestorage.app",
+      messagingSenderId: "675446115778",
+      appId: "1:675446115778:web:23cdb1134f59af98ad9a5b"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Update Navbar Buttons based on auth state
+    function updateAuthButtons(user) {
+      const authButtons = document.getElementById("auth-buttons");
+      authButtons.innerHTML = "";
+
+      if (user) {
+        // User logged in
+        const userEmail = document.createElement("span");
+        userEmail.textContent = user.email;
+        userEmail.style.color = "#f2c94c";
+        userEmail.style.marginRight = "10px";
+
+        const logoutBtn = document.createElement("button");
+        logoutBtn.textContent = "Logout";
+        logoutBtn.className = "btn btn-custom";
+        logoutBtn.onclick = () => auth.signOut();
+
+        authButtons.appendChild(userEmail);
+        authButtons.appendChild(logoutBtn);
+      } else {
+        // User logged out: show Get Started & Login links
+        const getStartedLink = document.createElement("a");
+        getStartedLink.href = "signup.html";
+        getStartedLink.className = "btn btn-custom";
+        getStartedLink.textContent = "Get Started";
+
+        const loginLink = document.createElement("a");
+        loginLink.href = "login.html";
+        loginLink.className = "btn btn-custom";
+        loginLink.style.marginLeft = "10px";
+        loginLink.textContent = "Login";
+
+        authButtons.appendChild(getStartedLink);
+        authButtons.appendChild(loginLink);
+      }
+    }
+
+    // Listen for auth state changes
+    auth.onAuthStateChanged(user => {
+      updateAuthButtons(user);
+      if (user) {
+        // Optionally redirect to home page or dashboard if already logged in
+        // window.location.href = "index.html";
+      }
+    });
+
+    // Handle Login form submit
+    const loginForm = document.getElementById("login-form");
+    loginForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      const errorMsg = document.getElementById("login-error");
+      errorMsg.textContent = "";
+
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          // Redirect to homepage or dashboard after login
+          window.location.href = "index.html";
+        })
+        .catch(error => {
+          errorMsg.textContent = error.message;
+        });
+    });
+  </script>
 </body>
 
 </html>
