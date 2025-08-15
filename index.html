@@ -67,7 +67,6 @@
         <li><a href="about.html">About</a></li>
         <li><a href="portfolio.html">Portfolio</a></li>
         <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="team.html">Team</a></li>
         <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
             <li><a href="#">Dropdown 1</a></li>
@@ -104,11 +103,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     const auth = getAuth(app);
     const authButtonsContainer = document.getElementById("auth-buttons");
+    const navMenu = document.querySelector("#navmenu ul"); // main nav <ul>
 
     function createAuthButtons(user) {
       authButtonsContainer.innerHTML = "";
 
+      // Remove previous Upload button if it exists
+      const existingUpload = document.getElementById("nav-upload");
+      if (existingUpload) existingUpload.remove();
+
       if (user) {
+        // Logged-in: email + logout
         const emailSpan = document.createElement("span");
         emailSpan.textContent = user.email;
         emailSpan.className = "user-email me-3 fw-semibold";
@@ -120,15 +125,26 @@
 
         authButtonsContainer.appendChild(emailSpan);
         authButtonsContainer.appendChild(logoutBtn);
+
+        // Add Upload link to navbar
+        const uploadLi = document.createElement("li");
+        uploadLi.id = "nav-upload";
+        const uploadLink = document.createElement("a");
+        uploadLink.href = "upload.html";
+        uploadLink.textContent = "Upload";
+        uploadLi.appendChild(uploadLink);
+        navMenu.insertBefore(uploadLi, navMenu.firstChild.nextSibling); 
+        // Inserts after Home
       } else {
+        // Logged-out: Sign Up / Login
         const getStartedLink = document.createElement("a");
         getStartedLink.href = "signup.html";
-        getStartedLink.className = "btn btn-primary rounded-pill px-4 fw-semibold";
+        getStartedLink.className = "btn rounded-pill px-4 fw-semibold btn-signup";
         getStartedLink.textContent = "Sign Up";
 
         const loginLink = document.createElement("a");
         loginLink.href = "login.html";
-        loginLink.className = "btn btn-outline-light rounded-pill px-4 fw-semibold ms-2";
+        loginLink.className = "btn rounded-pill px-4 fw-semibold ms-2 btn-login";
         loginLink.textContent = "Login";
 
         authButtonsContainer.appendChild(getStartedLink);
@@ -141,6 +157,8 @@
     });
   });
 </script>
+
+
 
 
   <main class="main">
@@ -183,6 +201,70 @@
 
     </section><!-- /Hero Section -->
 
+
+    <section id="properties" class="properties section my-5">
+  <div class="container">
+    <div class="section-title text-center mb-5">
+      <h2>Latest Properties</h2>
+      <p>Check out recently uploaded homes from our users.</p>
+    </div>
+    <div class="row" id="properties-container">
+      <!-- Property cards will be injected here -->
+    </div>
+  </div>
+</section>
+
+
+<script type="module">
+  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+  import { app } from "./firebase-config.js";
+
+  const db = getFirestore(app);
+  const propertiesContainer = document.getElementById("properties-container");
+
+  async function loadProperties() {
+    const q = query(collection(db, "properties"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+
+      const col = document.createElement("div");
+      col.className = "col-lg-4 col-md-6 mb-4";
+
+      col.innerHTML = `
+        <div class="card shadow-sm h-100">
+          <div id="carousel-${doc.id}" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              ${data.images.map((url, idx) => `
+                <div class="carousel-item ${idx === 0 ? "active" : ""}">
+                  <img src="${url}" class="d-block w-100" alt="Property Image">
+                </div>
+              `).join('')}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-${doc.id}" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-${doc.id}" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title fw-semibold">${data.title}</h5>
+            <p class="card-text">${data.description}</p>
+            <p class="fw-bold">£${data.price.toLocaleString()}</p>
+          </div>
+        </div>
+      `;
+
+      propertiesContainer.appendChild(col);
+    });
+  }
+
+  loadProperties();
+</script>
 
    
 
@@ -379,113 +461,7 @@
   </div>
 </section>
 
-<!-- Contact Section
-<section id="contact" class="contact section light-background">
-  <div class="container section-title" data-aos="fade-up">
-    <h2 style="color:#111">Contact Us</h2>
-    <p style="color:#111">Get in touch with our team to discuss your real estate needs.</p>
-  </div>
 
-  <div class="container" data-aos="fade-up" data-aos-delay="100">
-    <div class="row gy-4 mb-5">
-
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-        <div class="info-card" style="color:#111">
-          <div class="icon-box">
-            <i class="bi bi-geo-alt"></i>
-          </div>
-          <h3>Our Address</h3>
-          <p>2847 Rainbow Road, Springfield, IL 62701, USA</p>
-        </div>
-      </div>
-
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-        <div class="info-card" style="color:#111">
-          <div class="icon-box">
-            <i class="bi bi-telephone"></i>
-          </div>
-          <h3>Contact Number</h3>
-          <p>
-            Mobile: +1 (555) 123-4567<br>
-            Email: info@realestateco.com
-          </p>
-        </div>
-      </div>
-
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-        <div class="info-card" style="color:#111">
-          <div class="icon-box">
-            <i class="bi bi-clock"></i>
-          </div>
-          <h3>Opening Hours</h3>
-          <p>
-            Monday - Saturday: 9:00 - 18:00<br>
-            Sunday: Closed
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="form-wrapper" data-aos="fade-up" data-aos-delay="400">
-          <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-            <div class="row">
-              <div class="col-md-6 form-group">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-person"></i></span>
-                  <input type="text" name="name" class="form-control" placeholder="Your name*" required="">
-                </div>
-              </div>
-              <div class="col-md-6 form-group">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                  <input type="email" class="form-control" name="email" placeholder="Email address*" required="">
-                </div>
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-md-6 form-group">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-phone"></i></span>
-                  <input type="text" class="form-control" name="phone" placeholder="Phone number*" required="">
-                </div>
-              </div>
-              <div class="col-md-6 form-group">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-list"></i></span>
-                  <select name="subject" class="form-control" required="">
-                    <option value="">Select service*</option>
-                    <option value="Consulting">Consulting</option>
-                    <option value="Development">Development</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Support">Support</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-chat-dots"></i></span>
-                  <textarea class="form-control" name="message" rows="6" placeholder="Write a message*" required=""></textarea>
-                </div>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center">
-                <button type="submit">Submit Message</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-
-<!-- Footer -->
 <footer id="footer" class="footer light-background" style="color:#111">
   <div class="container footer-top">
     <div class="row gy-4">

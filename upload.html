@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Upload - Horizon Key</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+
+  <!-- Favicons -->
+  <link href="/favicon.ico" rel="icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet" />
+
+  <style>
+    /* Push content down so it doesn't hide behind the fixed navbar */
+    body.index-page {
+      padding-top: 80px; /* Adjust if navbar height changes */
+    }
+  </style>
+
+  <script>
+    window.addEventListener("scroll", function () {
+      const nav = document.getElementById("navmenu");
+      if (window.scrollY > 50) {
+        nav.classList.add("nav-dark");
+      } else {
+        nav.classList.remove("nav-dark");
+      }
+    });
+  </script>
+
+</head>
+<body class="index-page">
+     <header id="header" class="header d-flex align-items-center fixed-top">
+  <div class="container position-relative d-flex align-items-center justify-content-between">
+
+    <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+      <h1 class="sitename">Horizon Key</h1><span>.</span>
+    </a>
+
+    <nav id="navmenu" class="navmenu">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <ul>
+            <li><a href="#">Dropdown 1</a></li>
+            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="#">Deep Dropdown 1</a></li>
+                <li><a href="#">Deep Dropdown 2</a></li>
+                <li><a href="#">Deep Dropdown 3</a></li>
+                <li><a href="#">Deep Dropdown 4</a></li>
+                <li><a href="#">Deep Dropdown 5</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Dropdown 2</a></li>
+            <li><a href="#">Dropdown 3</a></li>
+            <li><a href="#">Dropdown 4</a></li>
+          </ul>
+        </li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+    </nav>
+
+    <!-- Auth Buttons -->
+    <div id="auth-buttons" class="d-flex align-items-center"></div>
+
+  </div>
+</header>
+
+<!-- Auth Script -->
+<script type="module">
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+  import { app } from "./firebase-config.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const auth = getAuth(app);
+    const authButtonsContainer = document.getElementById("auth-buttons");
+    const navMenu = document.querySelector("#navmenu ul"); // main nav <ul>
+
+    function createAuthButtons(user) {
+      authButtonsContainer.innerHTML = "";
+
+      // Remove previous Upload button if it exists
+      const existingUpload = document.getElementById("nav-upload");
+      if (existingUpload) existingUpload.remove();
+
+      if (user) {
+        // Logged-in: email + logout
+        const emailSpan = document.createElement("span");
+        emailSpan.textContent = user.email;
+        emailSpan.className = "user-email me-3 fw-semibold";
+
+        const logoutBtn = document.createElement("button");
+        logoutBtn.textContent = "Logout";
+        logoutBtn.className = "btn btn-outline-danger btn-sm rounded-pill px-3";
+        logoutBtn.onclick = () => signOut(auth);
+
+        authButtonsContainer.appendChild(emailSpan);
+        authButtonsContainer.appendChild(logoutBtn);
+
+        // Add Upload link to navbar
+        const uploadLi = document.createElement("li");
+        uploadLi.id = "nav-upload";
+        const uploadLink = document.createElement("a");
+        uploadLink.href = "upload.html";
+        uploadLink.textContent = "Upload";
+        uploadLi.appendChild(uploadLink);
+        navMenu.insertBefore(uploadLi, navMenu.firstChild.nextSibling); 
+        // Inserts after Home
+      } else {
+        // Logged-out: Sign Up / Login
+        const getStartedLink = document.createElement("a");
+        getStartedLink.href = "signup.html";
+        getStartedLink.className = "btn rounded-pill px-4 fw-semibold btn-signup";
+        getStartedLink.textContent = "Sign Up";
+
+        const loginLink = document.createElement("a");
+        loginLink.href = "login.html";
+        loginLink.className = "btn rounded-pill px-4 fw-semibold ms-2 btn-login";
+        loginLink.textContent = "Login";
+
+        authButtonsContainer.appendChild(getStartedLink);
+        authButtonsContainer.appendChild(loginLink);
+      }
+    }
+
+    onAuthStateChanged(auth, user => {
+      createAuthButtons(user);
+    });
+  });
+</script>
+
+<style>
+    body.upload-page {
+      padding-top: 80px; /* navbar height */
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .upload-house .card {
+      border: none;
+      border-radius: 15px;
+    }
+
+    .upload-house .section-title h2 {
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body class="upload-page">
+
+
+
+  <!-- Upload Form Section -->
+  <main class="container my-5">
+    <section id="upload-house" class="upload-house section">
+      <div class="container">
+        <div class="section-title text-center mb-5">
+          <h2>Upload a Property</h2>
+          <p>Share details of the houses you’ve bought with Horizon Key’s premium listings platform.</p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card shadow-sm p-4">
+              <form id="uploadForm">
+                <div class="mb-3">
+                  <label for="houseTitle" class="form-label fw-semibold">Property Title</label>
+                  <input type="text" class="form-control" id="houseTitle" placeholder="Elegant Family Home" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="houseDescription" class="form-label fw-semibold">Description</label>
+                  <textarea class="form-control" id="houseDescription" rows="5" placeholder="Provide details about the property..." required></textarea>
+                </div>
+
+                <div class="mb-3">
+                  <label for="housePrice" class="form-label fw-semibold">Price (£)</label>
+                  <input type="number" class="form-control" id="housePrice" placeholder="350000" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="houseImages" class="form-label fw-semibold">Upload Images</label>
+                  <input type="file" class="form-control" id="houseImages" multiple accept="image/*">
+                  <small class="text-muted">You can upload multiple images (JPEG, PNG)</small>
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary rounded-pill px-5 fw-semibold">Upload Property</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-storage.js";
+  import { app } from "./firebase-config.js";
+
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  const uploadForm = document.getElementById("uploadForm");
+
+  uploadForm.addEventListener("submit", async (e) => {
+    e.preventDefault(); // prevent default form submission
+
+    const title = document.getElementById("houseTitle").value.trim();
+    const description = document.getElementById("houseDescription").value.trim();
+    const price = document.getElementById("housePrice").value.trim();
+    const images = document.getElementById("houseImages").files;
+
+    if (!title || !description || !price) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (images.length === 0) {
+      alert("Please upload at least one image.");
+      return;
+    }
+
+    try {
+      const imageUrls = [];
+
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+        const storageRef = ref(storage, `properties/${Date.now()}_${image.name}`);
+        await uploadBytes(storageRef, image);
+        const url = await getDownloadURL(storageRef);
+        imageUrls.push(url);
+      }
+
+      // Save property data to Firestore
+      await addDoc(collection(db, "properties"), {
+        title,
+        description,
+        price: Number(price),
+        images: imageUrls,
+        createdAt: serverTimestamp()
+      });
+
+      alert("Property uploaded successfully!");
+      uploadForm.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading property. Check console for details.");
+    }
+  });
+</script>
+
+
+
+
+</body>
+</html>

@@ -63,7 +63,6 @@
         <li><a href="about.html">About</a></li>
         <li><a href="portfolio.html">Portfolio</a></li>
         <li><a href="pricing.html">Pricing</a></li>
-        <li><a href="team.html">Team</a></li>
         <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
           <ul>
             <li><a href="#">Dropdown 1</a></li>
@@ -100,11 +99,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     const auth = getAuth(app);
     const authButtonsContainer = document.getElementById("auth-buttons");
+    const navMenu = document.querySelector("#navmenu ul"); // main nav <ul>
 
     function createAuthButtons(user) {
       authButtonsContainer.innerHTML = "";
 
+      // Remove previous Upload button if it exists
+      const existingUpload = document.getElementById("nav-upload");
+      if (existingUpload) existingUpload.remove();
+
       if (user) {
+        // Logged-in: email + logout
         const emailSpan = document.createElement("span");
         emailSpan.textContent = user.email;
         emailSpan.className = "user-email me-3 fw-semibold";
@@ -116,15 +121,26 @@
 
         authButtonsContainer.appendChild(emailSpan);
         authButtonsContainer.appendChild(logoutBtn);
+
+        // Add Upload link to navbar
+        const uploadLi = document.createElement("li");
+        uploadLi.id = "nav-upload";
+        const uploadLink = document.createElement("a");
+        uploadLink.href = "upload.html";
+        uploadLink.textContent = "Upload";
+        uploadLi.appendChild(uploadLink);
+        navMenu.insertBefore(uploadLi, navMenu.firstChild.nextSibling); 
+        // Inserts after Home
       } else {
+        // Logged-out: Sign Up / Login
         const getStartedLink = document.createElement("a");
         getStartedLink.href = "signup.html";
-        getStartedLink.className = "btn btn-primary rounded-pill px-4 fw-semibold";
+        getStartedLink.className = "btn rounded-pill px-4 fw-semibold btn-signup";
         getStartedLink.textContent = "Sign Up";
 
         const loginLink = document.createElement("a");
         loginLink.href = "login.html";
-        loginLink.className = "btn btn-outline-light rounded-pill px-4 fw-semibold ms-2";
+        loginLink.className = "btn rounded-pill px-4 fw-semibold ms-2 btn-login";
         loginLink.textContent = "Login";
 
         authButtonsContainer.appendChild(getStartedLink);
@@ -137,6 +153,8 @@
     });
   });
 </script>
+
+
 
 
 

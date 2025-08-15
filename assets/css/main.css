@@ -3018,17 +3018,42 @@ section,
   font-size: 0.9rem;
 }
 
-/* Button hover effects */
-.btn-primary:hover {
-  background-color: #d2c20e;
+/* Auth button theme */
+#auth-buttons .btn-signup {
+  background-color: #f5c518;      /* gold */
+  color: #111;                     /* black text */
+  border: 1px solid #f5c518;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+#auth-buttons .btn-signup:hover,
+#auth-buttons .btn-signup:focus {
+  background-color: #d4a514;      /* darker gold */
+  border-color: #d4a514;
+  color: #111;
 }
 
-.btn-outline-light:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
+#auth-buttons .btn-login {
+  background-color: #111;          /* black */
+  color: #f5c518;                  /* gold text */
+  border: 1px solid #111;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+#auth-buttons .btn-login:hover,
+#auth-buttons .btn-login:focus {
+  background-color: #333;          /* darker black */
+  border-color: #333;
+  color: #f5c518;
 }
 
-.btn-outline-danger:hover {
-  background-color: #dc3545;
-  color: white;
+
+
+#navmenu ul #nav-upload a {
+  color: inherit;       /* Matches other links */
+  font-weight: 500;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+#navmenu ul #nav-upload a:hover {
+  color: inherit;       /* Optional: match hover style of other links */
 }
